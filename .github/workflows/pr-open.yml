@@ -2,6 +2,8 @@ name: Build Pull request
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+permissions:
+  contents: read
 env:
   NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
   TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
