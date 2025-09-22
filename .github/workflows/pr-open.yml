@@ -4,6 +4,7 @@ on:
     types: [opened, synchronize, reopened]
 permissions:
   contents: read
+  actions: write
 env:
   NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
   TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
