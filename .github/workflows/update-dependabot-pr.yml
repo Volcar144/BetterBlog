@@ -5,10 +5,13 @@ on:
       - dependabot/npm_and_yarn/**
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   update-tinacms:
+    permissions:
+      contents: write
+      actions: write
     runs-on: ubuntu-latest
     steps:
       # Clone repo
