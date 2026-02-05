@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { InlineTextarea, InlineGroup } from 'react-tinacms-inline';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { coy, okaidia } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import type { Template } from 'tinacms';
 
 const CodeExampleBlock = ({ index, data }) => {
   const [output, setOutput] = useState('');
@@ -153,3 +154,24 @@ const CodeExampleBlock = ({ index, data }) => {
 };
 
 export default CodeExampleBlock;
+
+export const codeExampleBlockSchema: Template = {
+  name: 'codeExample',
+  label: 'Code Example',
+  ui: {
+    previewSrc: '/blocks/code-example.png',
+    defaultItem: {
+      title: 'Code Example',
+      code: 'console.log("Hello World");',
+      language: 'javascript',
+      stdin: '',
+    },
+  },
+  fields: [
+    { type: 'string', label: 'Title', name: 'title' },
+    { type: 'string', label: 'Language', name: 'language' },
+    { type: 'string', label: 'Code', name: 'code', ui: { component: 'textarea' } },
+    { type: 'string', label: 'Input (optional)', name: 'stdin', ui: { component: 'textarea' } },
+  ],
+};
+
