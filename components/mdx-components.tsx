@@ -6,7 +6,7 @@ import { Prism } from 'tinacms/dist/rich-text/prism';
 import { Video } from './blocks/video';
 import { PageBlocksVideo } from '@/tina/__generated__/types';
 import { Mermaid } from './blocks/mermaid';
-import { CodeExampleBlockLive } from './blocks/CodeExampleBlockLive'; // <- import the live playground
+import { CodeExampleBlockLive } from './blocks/code-example-live'; // <- import the live playground
 
 export const components: Components<{
   BlockQuote: {
