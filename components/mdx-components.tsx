@@ -6,6 +6,7 @@ import { Prism } from 'tinacms/dist/rich-text/prism';
 import { Video } from './blocks/video';
 import { PageBlocksVideo } from '@/tina/__generated__/types';
 import { Mermaid } from './blocks/mermaid';
+import { CodeExampleBlockLive } from './blocks/CodeExampleBlockLive'; // <- import the live playground
 
 export const components: Components<{
   BlockQuote: {
@@ -22,6 +23,11 @@ export const components: Components<{
     disclaimer?: TinaMarkdownContent;
   };
   video: PageBlocksVideo;
+  CodeExample: {
+    code: string;
+    language: string;
+    stdin?: string;
+  };
 }> = {
   code_block: (props) => {
     if (!props) {
@@ -34,10 +40,18 @@ export const components: Components<{
 
     return <Prism lang={props.lang} value={props.value} />;
   },
-  BlockQuote: (props: {
-    children: TinaMarkdownContent;
-    authorName: string;
-  }) => {
+
+  CodeExample: (props: { code: string; language: string; stdin?: string }) => {
+    return (
+      <CodeExampleBlockLive
+        code={props.code}
+        language={props.language}
+        stdin={props.stdin}
+      />
+    );
+  },
+
+  BlockQuote: (props: { children: TinaMarkdownContent; authorName: string }) => {
     return (
       <div>
         <blockquote>
@@ -47,6 +61,7 @@ export const components: Components<{
       </div>
     );
   },
+
   DateTime: (props) => {
     const dt = React.useMemo(() => {
       return new Date();
@@ -63,6 +78,7 @@ export const components: Components<{
         return <span>{format(dt, 'P')}</span>;
     }
   },
+
   NewsletterSignup: (props) => {
     return (
       <div className='bg-white'>
@@ -99,6 +115,7 @@ export const components: Components<{
       </div>
     );
   },
+
   img: (props) => {
     if (!props) {
       return <></>;
@@ -109,7 +126,9 @@ export const components: Components<{
       </span>
     );
   },
+
   mermaid: (props: any) => <Mermaid {...props} />,
+
   video: (props) => {
     return <Video data={props} />;
   },
