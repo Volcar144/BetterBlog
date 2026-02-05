@@ -2,6 +2,7 @@ import React from 'react';
 import { videoBlockSchema } from '@/components/blocks/video';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { Collection } from 'tinacms';
+import { codeExampleBlockSchema } from '@/components/blocks/code-example-cms';
 
 const Post: Collection = {
   label: 'Blog Posts',
@@ -179,9 +180,11 @@ const Post: Collection = {
           },
         },
         videoBlockSchema,
+        codeExampleBlockSchema,
       ],
       isBody: true,
     },
+    
   ],
 };
 
