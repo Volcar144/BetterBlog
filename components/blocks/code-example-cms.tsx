@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { tinaField } from 'tinacms/dist/react';
 import { Section } from '../layout/section';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { PageBlocksCodeExample } from '@/tina/__generated__/types';
+import type { Template } from 'tinacms';
 
 export const CodeExampleBlockCMS = ({ data }: { data: PageBlocksCodeExample }) => {
   return (
@@ -57,4 +57,27 @@ export const CodeExampleBlockCMS = ({ data }: { data: PageBlocksCodeExample }) =
       </div>
     </Section>
   );
+};
+
+/**
+ * TinaCMS Block Schema
+ */
+export const codeExampleBlockSchema: Template = {
+  name: 'codeExample',
+  label: 'Code Example',
+  ui: {
+    previewSrc: '/blocks/code-example.png',
+    defaultItem: {
+      title: 'Code Example',
+      language: 'javascript',
+      code: 'console.log("Hello World");',
+      stdin: '',
+    },
+  },
+  fields: [
+    { type: 'string', label: 'Title', name: 'title' },
+    { type: 'string', label: 'Language', name: 'language' },
+    { type: 'string', label: 'Code', name: 'code', ui: { component: 'textarea' } },
+    { type: 'string', label: 'Input (optional)', name: 'stdin', ui: { component: 'textarea' } },
+  ],
 };
