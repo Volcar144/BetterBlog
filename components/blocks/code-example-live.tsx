@@ -1,125 +1,75 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-const CodeExampleBlockLive = ({ code, language, stdin }) => {
-  const [output, setOutput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [userCode, setUserCode] = useState(code || '');
-  const [userInput, setUserInput] = useState(stdin || '');
-  const [languages, setLanguages] = useState([]);
+interface Props {
+  code: string;
+  language: string;
+  stdin?: string;
+}
 
-  // Fetch supported languages from Piston
-  useEffect(() => {
-    fetch('https://emkc.org/api/v2/piston/runtimes')
-      .then(res => res.json())
-      .then(data => setLanguages(data.map(l => l.language)))
-      .catch(() => setLanguages(['javascript', 'python', 'go', 'ruby']));
-  }, []);
+export const CodeExampleBlockLive: React.FC<Props> = ({ code, language, stdin }) => {
+  const [input, setInput] = useState(stdin || '');
+  const [output, setOutput] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
   const runCode = async () => {
     setLoading(true);
     setOutput('');
     try {
-      const response = await fetch('https://emkc.org/api/v2/piston/execute', {
+      const res = await fetch('https://emkc.org/api/v2/piston/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           language,
-          source: userCode,
-          stdin: userInput,
+          version: '*',
+          files: [{ name: 'code', content: code }],
+          stdin: input,
         }),
       });
 
-      if (!response.ok) throw new Error('Execution API failed');
-
-      const result = await response.json();
-      const outputText = (result.run?.stdout || '') + (result.run?.stderr || '');
-      setOutput(outputText || 'No output');
-    } catch (err) {
+      const data = await res.json();
+      if (data.output) setOutput(data.output);
+      else setOutput('No output returned.');
+    } catch (err: any) {
       setOutput('Error: ' + err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const copyToClipboard = text => {
-    navigator.clipboard.writeText(text);
-  };
-
   return (
-    <div style={{ margin: '2rem 0', padding: '1rem', border: '1px solid #eee', borderRadius: '8px' }}>
-      <div>
-        <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>Code:</label>
-        <textarea
-          value={userCode}
-          onChange={e => setUserCode(e.target.value)}
-          style={{ width: '100%', fontFamily: 'monospace', minHeight: '120px', marginBottom: '1rem' }}
-        />
-      </div>
+    <div className="border rounded p-4 mb-8">
+      <h2 className="text-xl font-semibold mb-2">{language} Example</h2>
 
-      <div>
-        <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>Input (optional):</label>
-        <textarea
-          value={userInput}
-          onChange={e => setUserInput(e.target.value)}
-          style={{ width: '100%', fontFamily: 'monospace', minHeight: '60px', marginBottom: '1rem' }}
-        />
-      </div>
+      <label className="block font-medium mt-2">Code:</label>
+      <SyntaxHighlighter language={language} style={coy}>
+        {code}
+      </SyntaxHighlighter>
+
+      <label className="block font-medium mt-2">Input (optional):</label>
+      <textarea
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Optional stdin"
+        className="w-full border p-2 rounded font-mono min-h-[60px]"
+      />
 
       <button
         onClick={runCode}
-        disabled={loading || !userCode || !language}
-        style={{
-          marginBottom: '1rem',
-          padding: '0.5rem 1rem',
-          background: '#0070f3',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: loading ? 'not-allowed' : 'pointer',
-        }}
+        disabled={loading}
+        className="mt-3 px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 disabled:opacity-50"
       >
-        {loading ? 'Running...' : 'Run Code'}
+        {loading ? 'Running...' : 'Run'}
       </button>
 
-      <div>
-        <h4>Output:</h4>
-        {output && (
-          <div
-            style={{
-              padding: '1rem',
-              background: '#f7f7f7',
-              borderRadius: '4px',
-              whiteSpace: 'pre-wrap',
-              color: output.startsWith('Error:') ? 'red' : 'green',
-              position: 'relative',
-            }}
-          >
-            <button
-              onClick={() => copyToClipboard(output)}
-              style={{
-                position: 'absolute',
-                top: '5px',
-                right: '5px',
-                padding: '0.25rem 0.5rem',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-              }}
-            >
-              Copy
-            </button>
-            {output}
-          </div>
-        )}
-      </div>
-
-      <h4>Code Preview:</h4>
-      <SyntaxHighlighter language={language} style={coy}>
-        {userCode}
-      </SyntaxHighlighter>
+      {output && (
+        <div className="mt-4 bg-gray-100 dark:bg-gray-800 p-3 rounded font-mono whitespace-pre-wrap">
+          {output}
+        </div>
+      )}
     </div>
   );
 };
-
-export default CodeExampleBlockLive;
