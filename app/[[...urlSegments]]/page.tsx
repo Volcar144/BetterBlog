@@ -8,11 +8,15 @@ import ClientPage from './client-page';
 export const revalidate = 300;
 
 interface PageParams {
-  urlSegments: string[];
+  urlSegments?: string[];
 }
 
-export default async function Page({ params }: { params: PageParams }) {
-  const filepath = params.urlSegments.join('/');
+export default async function Page({ params }: { params: Promise<PageParams> }) {
+  const resolvedParams = await params;
+  // Handle home page when urlSegments is empty or undefined
+  const filepath = resolvedParams.urlSegments && resolvedParams.urlSegments.length > 0
+    ? resolvedParams.urlSegments.join('/')
+    : 'home';
 
   let data;
   try {
@@ -58,11 +62,15 @@ export async function generateStaticParams() {
   }
 
   const params = allPages.data.pageConnection.edges
-    .map((edge) => ({
-      urlSegments: edge?.node?._sys.breadcrumbs || [],
-    }))
-    .filter((x) => x.urlSegments.length >= 1)
-    .filter((x) => !x.urlSegments.every((seg) => seg === 'home')); // exclude home
+    .map((edge) => {
+      const breadcrumbs = edge?.node?._sys.breadcrumbs || [];
+      // For home page, return empty urlSegments to match root path
+      if (breadcrumbs.length === 1 && breadcrumbs[0] === 'home') {
+        return { urlSegments: undefined };
+      }
+      return { urlSegments: breadcrumbs };
+    })
+    .filter((x) => x.urlSegments === undefined || x.urlSegments.length >= 1);
 
   return params;
 }
