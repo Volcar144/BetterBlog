@@ -7,13 +7,12 @@ import ClientPage from './client-page';
 
 export const revalidate = 300;
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ urlSegments: string[] }>;
-}) {
-  const resolvedParams = await params;
-  const filepath = resolvedParams.urlSegments.join('/');
+interface PageParams {
+  urlSegments: string[];
+}
+
+export default async function Page({ params }: { params: PageParams }) {
+  const filepath = params.urlSegments.join('/');
 
   let data;
   try {
@@ -21,44 +20,43 @@ export default async function Page({
       relativePath: `${filepath}.mdx`,
     });
   } catch (error) {
-    notFound();
+    return notFound();
   }
+
+  if (!data?.page) return notFound();
 
   return (
     <Layout rawPageData={data}>
       <Section>
-        <ClientPage {...data} />
+        <ClientPage {...data} query="" variables={{ relativePath: `${filepath}.mdx` }} />
       </Section>
     </Layout>
   );
 }
 
+// Generate all static paths for ISR / SSG
 export async function generateStaticParams() {
   let pages = await client.queries.pageConnection();
   const allPages = pages;
 
-  if (!allPages.data.pageConnection.edges) {
-    return [];
-  }
+  if (!allPages.data.pageConnection.edges) return [];
 
   while (pages.data.pageConnection.pageInfo.hasNextPage) {
     pages = await client.queries.pageConnection({
       after: pages.data.pageConnection.pageInfo.endCursor,
     });
 
-    if (!pages.data.pageConnection.edges) {
-      break;
-    }
+    if (!pages.data.pageConnection.edges) break;
 
     allPages.data.pageConnection.edges.push(...pages.data.pageConnection.edges);
   }
 
-  const params = allPages.data?.pageConnection.edges
+  const params = allPages.data.pageConnection.edges
     .map((edge) => ({
       urlSegments: edge?.node?._sys.breadcrumbs || [],
     }))
     .filter((x) => x.urlSegments.length >= 1)
-    .filter((x) => !x.urlSegments.every((x) => x === 'home')); // exclude the home page
+    .filter((x) => !x.urlSegments.every((seg) => seg === 'home')); // exclude home
 
   return params;
 }
