@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import client from '@/tina/__generated__/client';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export const size = {
   width: 1200,
