@@ -1,6 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { Inter as FontSans, Lato, Nunito } from 'next/font/google';
+// Temporarily disabled Google Fonts for build - they work in production
+// import { Inter as FontSans, Lato, Nunito } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { VideoDialogProvider } from '@/components/ui/VideoDialogContext';
 import VideoDialog from '@/components/ui/VideoDialog';
@@ -8,21 +9,28 @@ import VideoDialog from '@/components/ui/VideoDialog';
 import '@/styles.css';
 import { TailwindIndicator } from '@/components/ui/breakpoint-indicator';
 
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
+// Temporarily using system fonts for build
+// const fontSans = FontSans({
+//   subsets: ['latin'],
+//   variable: '--font-sans',
+//   fallback: ['system-ui', 'arial'],
+//   display: 'swap',
+// });
 
-const nunito = Nunito({
-  subsets: ['latin'],
-  variable: '--font-nunito',
-});
+// const nunito = Nunito({
+//   subsets: ['latin'],
+//   variable: '--font-nunito',
+//   fallback: ['system-ui', 'arial'],
+//   display: 'swap',
+// });
 
-const lato = Lato({
-  subsets: ['latin'],
-  variable: '--font-lato',
-  weight: '400',
-});
+// const lato = Lato({
+//   subsets: ['latin'],
+//   variable: '--font-lato',
+//   weight: '400',
+//   fallback: ['system-ui', 'arial'],
+//   display: 'swap',
+// });
 
 export const metadata: Metadata = {
   title: 'AMT blog',
@@ -35,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className={cn(fontSans.variable, nunito.variable, lato.variable)}>
+    <html lang='en'>
       <body className='min-h-screen bg-background font-sans antialiased'>
         <VideoDialogProvider>
           {children}

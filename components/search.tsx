@@ -323,7 +323,7 @@ const HitsList = memo(function HitsList({ hits, selectedIndex, attributes, onHov
 export interface SearchInputProps {
   placeholder?: string;
   className?: string;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
   onClose: () => void;
   onArrowDown?: () => void;
   onEnter?: () => void;
@@ -435,7 +435,7 @@ interface SearchBoxProps {
   query?: string;
   className?: string;
   placeholder?: string;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
   refine: (query: string) => void;
   onClose?: () => void;
   onArrowDown?: () => void;
@@ -480,7 +480,7 @@ const NoResults = memo(function NoResults({ query, onClear }: NoResultsProps) {
 });
 
 interface ResultsPanelProps {
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
   query: string;
   selectedIndex: number;
   refine: (query: string) => void;
@@ -551,7 +551,7 @@ interface SearchModalProps {
 
 export function SearchModal({ onClose, config }: SearchModalProps) {
   const { query, refine } = useSearchBox();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useInstantSearch();
   const { items, sendEvent } = useHits();

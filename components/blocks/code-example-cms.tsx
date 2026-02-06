@@ -3,10 +3,17 @@ import { tinaField } from 'tinacms/dist/react';
 import { Section } from '../layout/section';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import type { PageBlocksCodeExample } from '@/tina/__generated__/types';
 import type { Template } from 'tinacms';
 
-export const CodeExampleBlockCMS = ({ data }: { data: PageBlocksCodeExample }) => {
+// Define type locally since it's not in the generated types for Pages
+interface CodeExampleBlock extends Record<string, unknown> {
+  title?: string;
+  language?: string;
+  code?: string;
+  stdin?: string;
+}
+
+export const CodeExampleBlockCMS = ({ data }: { data: CodeExampleBlock }) => {
   return (
     <Section>
       <div className='mb-4'>
