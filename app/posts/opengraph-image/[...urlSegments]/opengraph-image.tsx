@@ -1,22 +1,27 @@
-import { ImageResponse } from 'next/og'
-import { client } from '@/tina/__generated__/client'
+import { ImageResponse } from 'next/og';
+import client from '@/tina/__generated__/client';
 
-export const runtime = 'edge'
-export const size = { width: 1200, height: 630 }
-export const contentType = 'image/png'
+export const runtime = 'edge';
 
-type Props = {
-  params: { slug: string[] }
-}
+export const size = {
+  width: 1200,
+  height: 630,
+};
 
-export default async function Image({ params }: Props) {
-  const relativePath = `${params.slug.join('/')}.mdx`
-  const data = await client.queries.post({ relativePath })
-  const post = data.data.post
+export const contentType = 'image/png';
 
-  const title = post.title ?? 'Post'
-  const author = post.author?.name ?? ''
-  const date = post.date ?? ''
+export default async function Image({
+  params,
+}: {
+  params: { urlSegments: string[] };
+}) {
+  const filepath = params.urlSegments.join('/');
+
+  const data = await client.queries.post({
+    relativePath: `${filepath}.mdx`,
+  });
+
+  const post = data.data.post;
 
   return new ImageResponse(
     (
@@ -25,26 +30,17 @@ export default async function Image({ params }: Props) {
           width: '100%',
           height: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '80px',
-          background: 'linear-gradient(135deg,#0f172a,#020617)',
+          background: '#0f172a',
           color: 'white',
-          fontFamily: 'Inter, sans-serif',
+          padding: 80,
+          fontSize: 60,
+          fontWeight: 700,
+          alignItems: 'center',
         }}
       >
-        <div style={{ fontSize: 28, opacity: 0.7 }}>Your Blog</div>
-
-        <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.1 }}>
-          {title}
-        </div>
-
-        <div style={{ fontSize: 26, opacity: 0.8 }}>
-          {author && <span>{author} • </span>}
-          {date}
-        </div>
+        {post.title}
       </div>
     ),
-    size
-  )
+    { ...size }
+  );
 }
