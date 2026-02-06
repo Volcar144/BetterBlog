@@ -24,23 +24,21 @@ export default async function Image({
   const post = data.data.post;
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          background: '#0f172a',
-          color: 'white',
-          padding: 80,
-          fontSize: 60,
-          fontWeight: 700,
-          alignItems: 'center',
-        }}
-      >
-        {post.title}
-      </div>
-    ),
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        background: '#0f172a',
+        color: 'white',
+        padding: 80,
+        fontSize: 60,
+        fontWeight: 700,
+        alignItems: 'center',
+      }}
+    >
+      {post.title}
+    </div>,
     { ...size }
   );
 }

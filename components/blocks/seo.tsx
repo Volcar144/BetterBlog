@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Head from 'next/head';
 
 export type SEOProps = {
   title: string;
@@ -9,23 +9,23 @@ export type SEOProps = {
 
 export default function SEO({ title, description, image, url }: SEOProps) {
   const metaTitle = title;
-  const metaDescription = description ?? "";
+  const metaDescription = description ?? '';
 
   return (
     <Head>
       <title>{metaTitle}</title>
-      <meta name="description" content={metaDescription} />
+      <meta name='description' content={metaDescription} />
 
-      <meta property="og:type" content="article" />
-      <meta property="og:title" content={metaTitle} />
-      <meta property="og:description" content={metaDescription} />
-      {image && <meta property="og:image" content={image} />}
-      {url && <meta property="og:url" content={url} />}
+      <meta property='og:type' content='article' />
+      <meta property='og:title' content={metaTitle} />
+      <meta property='og:description' content={metaDescription} />
+      {image && <meta property='og:image' content={image} />}
+      {url && <meta property='og:url' content={url} />}
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={metaTitle} />
-      <meta name="twitter:description" content={metaDescription} />
-      {image && <meta name="twitter:image" content={image} />}
+      <meta name='twitter:card' content='summary_large_image' />
+      <meta name='twitter:title' content={metaTitle} />
+      <meta name='twitter:description' content={metaDescription} />
+      {image && <meta name='twitter:image' content={image} />}
     </Head>
   );
 }

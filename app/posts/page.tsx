@@ -7,7 +7,7 @@ export const revalidate = 300;
 export default async function PostsPage() {
   let posts = await client.queries.postConnection({
     sort: 'date',
-    last: 1
+    last: 1,
   });
   const allPosts = posts;
 

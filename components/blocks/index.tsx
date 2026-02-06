@@ -1,16 +1,16 @@
-import { tinaField } from "tinacms/dist/react";
-import { Page, PageBlocks } from "../../tina/__generated__/types";
-import { Hero } from "./hero";
-import { Content } from "./content";
-import { Features } from "./features";
-import { Testimonial } from "./testimonial";
-import { Video } from "./video";
-import { Callout } from "./callout";
-import { Stats } from "./stats";
-import { CallToAction } from "./call-to-action";
-import {CodeExampleBlockCMS} from "./code-example-cms";
+import { tinaField } from 'tinacms/dist/react';
+import { Page, PageBlocks } from '../../tina/__generated__/types';
+import { Hero } from './hero';
+import { Content } from './content';
+import { Features } from './features';
+import { Testimonial } from './testimonial';
+import { Video } from './video';
+import { Callout } from './callout';
+import { Stats } from './stats';
+import { CallToAction } from './call-to-action';
+import { CodeExampleBlockCMS } from './code-example-cms';
 
-export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
+export const Blocks = (props: Omit<Page, 'id' | '_sys' | '_values'>) => {
   if (!props.blocks) return null;
   return (
     <>
@@ -27,23 +27,23 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
 
 const Block = (block: PageBlocks) => {
   switch (block.__typename) {
-    case "PageBlocksVideo":
+    case 'PageBlocksVideo':
       return <Video data={block} />;
-    case "PageBlocksHero":
+    case 'PageBlocksHero':
       return <Hero data={block} />;
-    case "PageBlocksCallout":
+    case 'PageBlocksCallout':
       return <Callout data={block} />;
-    case "PageBlocksStats":
+    case 'PageBlocksStats':
       return <Stats data={block} />;
-    case "PageBlocksContent":
+    case 'PageBlocksContent':
       return <Content data={block} />;
-    case "PageBlocksFeatures":
+    case 'PageBlocksFeatures':
       return <Features data={block} />;
-    case "PageBlocksTestimonial":
+    case 'PageBlocksTestimonial':
       return <Testimonial data={block} />;
-    case "PageBlocksCta":
+    case 'PageBlocksCta':
       return <CallToAction data={block} />;
-    case "PageBlocksCodeExample":
+    case 'PageBlocksCodeExample':
       return <CodeExampleBlockCMS data={block} />;
     default:
       return null;

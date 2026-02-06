@@ -7,6 +7,9 @@ import { Video } from './blocks/video';
 import { PageBlocksVideo } from '@/tina/__generated__/types';
 import { Mermaid } from './blocks/mermaid';
 import { CodeExampleBlockLive } from './blocks/code-example-live'; // <- import the live playground
+import { RubiksCubePlayer } from './rubiks-cube-player';
+import { NewsletterSignupForm } from './newsletter-signup';
+import { AlertCallout } from './blocks/alert-callout';
 
 export const components: Components<{
   BlockQuote: {
@@ -17,10 +20,15 @@ export const components: Components<{
     format?: string;
   };
   NewsletterSignup: {
-    placeholder: string;
-    buttonText: string;
+    placeholder?: string;
+    buttonText?: string;
+    title?: string;
+    description?: string;
+  };
+  Callout: {
+    type?: 'info' | 'warning' | 'danger' | 'success';
+    title?: string;
     children: TinaMarkdownContent;
-    disclaimer?: TinaMarkdownContent;
   };
   video: PageBlocksVideo;
   CodeExample: {
@@ -28,25 +36,47 @@ export const components: Components<{
     language: string;
     stdin?: string;
   };
+  RubiksCube: {
+    title?: string;
+    algorithm: string;
+    setupAlgorithm?: string;
+    autoplay?: boolean;
+    stickering?: string;
+    showControls?: boolean;
+  };
 }> = {
   code_block: (props) => {
     if (!props) {
       return <></>;
     }
-    
+
     if (props.lang === 'mermaid') {
-      return <Mermaid value={props.value} />
+      return <Mermaid value={props.value} />;
     }
 
     return <Prism lang={props.lang} value={props.value} />;
   },
 
   CodeExample: (props: { code: string; language: string; stdin?: string }) => {
+    return <CodeExampleBlockLive code={props.code} language={props.language} stdin={props.stdin} />;
+  },
+
+  RubiksCube: (props: {
+    title?: string;
+    algorithm: string;
+    setupAlgorithm?: string;
+    autoplay?: boolean;
+    stickering?: string;
+    showControls?: boolean;
+  }) => {
     return (
-      <CodeExampleBlockLive
-        code={props.code}
-        language={props.language}
-        stdin={props.stdin}
+      <RubiksCubePlayer
+        title={props.title}
+        algorithm={props.algorithm}
+        setupAlgorithm={props.setupAlgorithm}
+        autoplay={props.autoplay}
+        stickering={(props.stickering as any) || 'none'}
+        showControls={props.showControls !== false}
       />
     );
   },
@@ -60,6 +90,14 @@ export const components: Components<{
         </blockquote>
       </div>
     );
+  },
+
+  Callout: (props: {
+    type?: 'info' | 'warning' | 'danger' | 'success';
+    title?: string;
+    children: TinaMarkdownContent;
+  }) => {
+    return <AlertCallout type={props.type || 'info'} title={props.title} children={props.children} />;
   },
 
   DateTime: (props) => {
@@ -79,41 +117,13 @@ export const components: Components<{
     }
   },
 
-  NewsletterSignup: (props) => {
-    return (
-      <div className='bg-white'>
-        <div className='max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8'>
-          <div className=''>
-            <TinaMarkdown content={props.children} />
-          </div>
-          <div className='mt-8 '>
-            <form className='sm:flex'>
-              <label htmlFor='email-address' className='sr-only'>
-                Email address
-              </label>
-              <input
-                id='email-address'
-                name='email-address'
-                type='email'
-                autoComplete='email'
-                required
-                className='w-full px-5 py-3 border border-gray-300 shadow-xs placeholder-gray-400 focus:ring-1 focus:ring-teal-500 focus:border-teal-500 sm:max-w-xs rounded-md'
-                placeholder={props.placeholder}
-              />
-              <div className='mt-3 rounded-md shadow-sm sm:mt-0 sm:ml-3 sm:shrink-0'>
-                <button
-                  type='submit'
-                  className='w-full flex items-center justify-center py-3 px-5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-teal-500'
-                >
-                  {props.buttonText}
-                </button>
-              </div>
-            </form>
-            <div className='mt-3 text-sm text-gray-500'>{props.disclaimer && <TinaMarkdown content={props.disclaimer} />}</div>
-          </div>
-        </div>
-      </div>
-    );
+  NewsletterSignup: (props: {
+    placeholder?: string;
+    buttonText?: string;
+    title?: string;
+    description?: string;
+  }) => {
+    return <NewsletterSignupForm placeholder={props.placeholder} buttonText={props.buttonText} title={props.title} description={props.description} />;
   },
 
   img: (props) => {

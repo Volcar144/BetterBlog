@@ -23,12 +23,18 @@ export default async function Page({ params }: { params: PageParams }) {
     return notFound();
   }
 
-  if (!data?.page) return notFound();
+  if (!data?.data?.page) return notFound();
+
+  const clientProps = {
+    data: data.data,
+    query: data.query || '',
+    variables: { relativePath: `${filepath}.mdx` },
+  };
 
   return (
     <Layout rawPageData={data}>
       <Section>
-        <ClientPage {...data} query="" variables={{ relativePath: `${filepath}.mdx` }} />
+        <ClientPage {...clientProps} />
       </Section>
     </Layout>
   );

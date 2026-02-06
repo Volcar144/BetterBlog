@@ -2,6 +2,7 @@ import React from 'react';
 import client from '@/tina/__generated__/client';
 import Layout from '@/components/layout/layout';
 import PostClientPage from './client-page';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const revalidate = 300;
@@ -20,14 +21,15 @@ export async function generateMetadata({
 
   const post = data.data.post;
 
-  const title = post.title ?? 'Post';
-  const description =
-    post.description ??
-    post.excerpt ??
-    post._body?.children?.[0]?.children?.[0]?.text ??
-    '';
+  // Return 404 for draft posts
+  if ((post as any).draft) {
+    return {};
+  }
 
-  const ogImage = `/opengraph-images/${filepath}`;
+  const title = post.title ?? 'Post';
+  const description = post.excerpt ?? post._body?.children?.[0]?.children?.[0]?.text ?? '';
+
+  const ogImage = `/posts/${filepath}/opengraph-image`;
 
   return {
     title,
@@ -59,6 +61,11 @@ export default async function PostPage({
     relativePath: `${filepath}.mdx`,
   });
 
+  // Return 404 for draft posts in production
+  if ((data.data.post as any).draft && process.env.NODE_ENV === 'production') {
+    return notFound();
+  }
+
   return (
     <Layout rawPageData={data}>
       <PostClientPage {...data} />
@@ -84,9 +91,12 @@ export async function generateStaticParams() {
     allPosts.data.postConnection.edges.push(...posts.data.postConnection.edges);
   }
 
+  // Filter out draft posts
   return (
-    allPosts.data?.postConnection.edges.map((edge) => ({
-      urlSegments: edge?.node?._sys.breadcrumbs,
-    })) || []
+    allPosts.data?.postConnection.edges
+      .filter((edge) => !(edge?.node as any)?.draft)
+      .map((edge) => ({
+        urlSegments: edge?.node?._sys.breadcrumbs,
+      })) || []
   );
 }

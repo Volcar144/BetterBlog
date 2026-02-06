@@ -9,48 +9,45 @@ import type { Template } from 'tinacms';
 export const CodeExampleBlockCMS = ({ data }: { data: PageBlocksCodeExample }) => {
   return (
     <Section>
-      <div className="mb-4">
-        <h2
-          data-tina-field={tinaField(data, 'title')}
-          className="text-2xl font-semibold"
-        >
+      <div className='mb-4'>
+        <h2 data-tina-field={tinaField(data, 'title')} className='text-2xl font-semibold'>
           {data.title || 'Code Example'}
         </h2>
       </div>
 
-      <div className="mb-4">
-        <label className="block font-medium">Language</label>
+      <div className='mb-4'>
+        <label className='block font-medium'>Language</label>
         <input
-          type="text"
+          type='text'
           data-tina-field={tinaField(data, 'language')}
-          placeholder="javascript"
-          className="w-full border p-2 rounded mb-2"
+          placeholder='javascript'
+          className='w-full border p-2 rounded mb-2'
           defaultValue={data.language || 'javascript'}
         />
       </div>
 
-      <div className="mb-4">
-        <label className="block font-medium">Code</label>
+      <div className='mb-4'>
+        <label className='block font-medium'>Code</label>
         <textarea
           data-tina-field={tinaField(data, 'code')}
-          placeholder="// Your code here"
-          className="w-full border p-2 rounded font-mono min-h-[120px]"
+          placeholder='// Your code here'
+          className='w-full border p-2 rounded font-mono min-h-[120px]'
           defaultValue={data.code || ''}
         />
       </div>
 
-      <div className="mb-4">
-        <label className="block font-medium">Input (optional)</label>
+      <div className='mb-4'>
+        <label className='block font-medium'>Input (optional)</label>
         <textarea
           data-tina-field={tinaField(data, 'stdin')}
-          placeholder="Optional stdin"
-          className="w-full border p-2 rounded font-mono min-h-[60px]"
+          placeholder='Optional stdin'
+          className='w-full border p-2 rounded font-mono min-h-[60px]'
           defaultValue={data.stdin || ''}
         />
       </div>
 
       <div>
-        <h3 className="font-semibold mb-2">Preview</h3>
+        <h3 className='font-semibold mb-2'>Preview</h3>
         <SyntaxHighlighter language={data.language || 'javascript'} style={coy}>
           {data.code || ''}
         </SyntaxHighlighter>

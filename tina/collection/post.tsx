@@ -81,6 +81,12 @@ const Post: Collection = {
       },
     },
     {
+      type: 'boolean',
+      label: 'Draft',
+      name: 'draft',
+      description: 'When enabled, this post will not be visible on the public site',
+    },
+    {
       type: 'object',
       label: 'Tags',
       name: 'tags',
@@ -179,12 +185,107 @@ const Post: Collection = {
             },
           },
         },
+        {
+          name: 'RubiksCube',
+          label: "Rubik's Cube",
+          fields: [
+            {
+              name: 'title',
+              label: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'algorithm',
+              label: 'Algorithm',
+              type: 'string',
+              ui: {
+                component: 'textarea',
+              },
+            },
+            {
+              name: 'setupAlgorithm',
+              label: 'Setup / Scramble',
+              type: 'string',
+              ui: {
+                component: 'textarea',
+              },
+            },
+            {
+              name: 'autoplay',
+              label: 'Autoplay',
+              type: 'boolean',
+            },
+            {
+              name: 'stickering',
+              label: 'Default Highlighting',
+              type: 'string',
+              options: [
+                { label: 'None', value: 'none' },
+                { label: 'OLL (Last Layer)', value: 'OLL' },
+                { label: 'PLL (Permutation)', value: 'PLL' },
+                { label: 'Cross (Yellow)', value: 'Cross' },
+                { label: 'CMLL (Roux)', value: 'CMLL' },
+                { label: 'LSE (Roux)', value: 'LSE' },
+              ],
+            },
+            {
+              name: 'showControls',
+              label: 'Show Playback Controls',
+              type: 'boolean',
+            },
+          ],
+          ui: {
+            defaultItem: {
+              title: "Rubik's Cube",
+              algorithm: "R U R' U'",
+              setupAlgorithm: '',
+              autoplay: true,
+              stickering: 'none',
+              showControls: true,
+            },
+          },
+        },
+        {
+          name: 'Callout',
+          label: 'Callout',
+          fields: [
+            {
+              name: 'type',
+              label: 'Type',
+              type: 'string',
+              options: [
+                { label: 'Info', value: 'info' },
+                { label: 'Warning', value: 'warning' },
+                { label: 'Danger', value: 'danger' },
+                { label: 'Success', value: 'success' },
+              ],
+            },
+            {
+              name: 'title',
+              label: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'children',
+              label: 'Content',
+              type: 'rich-text',
+              overrides: {
+                toolbar: ['bold', 'italic', 'link', 'ul', 'ol'],
+              },
+            },
+          ],
+          ui: {
+            defaultItem: {
+              type: 'info',
+              title: 'Important Note',
+            },
+          },
+        },
         videoBlockSchema,
         codeExampleBlockSchema,
       ],
       isBody: true,
     },
-    
   ],
 };
 
