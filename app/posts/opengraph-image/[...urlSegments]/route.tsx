@@ -10,11 +10,10 @@ export const size = {
 
 export const contentType = 'image/png';
 
-export default async function Image({
-  params,
-}: {
-  params: { urlSegments: string[] };
-}) {
+export async function GET(
+  _request: Request,
+  { params }: { params: { urlSegments: string[] } }
+) {
   const filepath = params.urlSegments.join('/');
 
   const data = await client.queries.post({
