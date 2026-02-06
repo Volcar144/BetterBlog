@@ -27,7 +27,7 @@ export async function generateMetadata({
     post._body?.children?.[0]?.children?.[0]?.text ??
     '';
 
-  const ogImage = `/${filepath}/opengraph-image`;
+  const ogImage = `/posts/opengraph-image/${filepath}`;
 
   return {
     title,
