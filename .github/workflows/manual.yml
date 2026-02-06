@@ -14,10 +14,15 @@ jobs:
   Run_push:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v6.2.0
+      
+    - name: Install Deps
+      run: npm install --yes
+    
     - name: Update tina
       run: npx tina graphql:push
 
