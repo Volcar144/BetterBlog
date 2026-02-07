@@ -10,6 +10,7 @@ interface CodeExampleData {
   language?: string;
   code?: string;
   stdin?: string;
+  [key: string]: unknown;
 }
 
 export const CodeExampleBlockCMS = ({ data }: { data: CodeExampleData }) => {
