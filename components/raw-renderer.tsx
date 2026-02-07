@@ -17,7 +17,8 @@ export const RawRenderer = ({ rawData, parentColor }) => {
     purple: 'text-purple-500',
     orange: 'text-orange-500',
     yellow: 'text-yellow-600',
-  };
+  } as const;
+  const themeColor = (theme?.color ?? 'blue') as keyof typeof buttonColorClasses;
   const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -33,9 +34,8 @@ export const RawRenderer = ({ rawData, parentColor }) => {
       <button
         type='button'
         onClick={openModal}
-        //@ts-ignore
         className={`z-10 relative flex items-center px-5 py-2 mx-3 my-2 font-semibold text-sm transition duration-150 ease-out rounded transform focus:shadow-outline focus:outline-hidden whitespace-nowrap opacity-80 hover:opacity-100 shadow-md ${
-          buttonColorClasses[theme!.color!]
+          buttonColorClasses[themeColor]
         }`}
       >
         View Raw Data
