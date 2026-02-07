@@ -8,7 +8,7 @@ const size = {
   height: 630,
 };
 
-export const contentType = 'image/png';
+const contentType = 'image/png';
 
 export async function GET(
   _request: Request,
@@ -39,6 +39,6 @@ export async function GET(
     >
       {post.title}
     </div>,
-    { ...size }
+    { ...size, contentType }
   );
 }
