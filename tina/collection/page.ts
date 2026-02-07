@@ -9,6 +9,7 @@ import { statsBlockSchema } from '@/components/blocks/stats';
 import { ctaBlockSchema } from '@/components/blocks/call-to-action';
 import { codeExampleBlockSchema } from '@/components/blocks/code-example-cms';
 import { accordionBlockSchema } from '@/components/blocks/accordion';
+import { recommendedPostsBlockSchema } from '@/components/blocks/recommended-posts';
 
 const Page: Collection = {
   label: 'Pages',
@@ -44,6 +45,7 @@ const Page: Collection = {
         videoBlockSchema,
         codeExampleBlockSchema,
         accordionBlockSchema,
+        recommendedPostsBlockSchema,
       ],
     },
   ],

@@ -10,6 +10,7 @@ import { CodeExampleBlockLive } from './blocks/code-example-live'; // <- import 
 import { RubiksCubePlayer } from './rubiks-cube-player';
 import { NewsletterSignupForm } from './newsletter-signup';
 import { AlertCallout } from './blocks/alert-callout';
+import { ImageLightbox } from './ui/image-lightbox';
 
 export const components: Components<{
   BlockQuote: {
@@ -36,6 +37,11 @@ export const components: Components<{
     language: string;
     stdin?: string;
   };
+  codeExample: {
+    code: string;
+    language: string;
+    stdin?: string;
+  };
   RubiksCube: {
     title?: string;
     algorithm: string;
@@ -58,6 +64,10 @@ export const components: Components<{
   },
 
   CodeExample: (props: { code: string; language: string; stdin?: string }) => {
+    return <CodeExampleBlockLive code={props.code} language={props.language} stdin={props.stdin} />;
+  },
+
+  codeExample: (props: { code: string; language: string; stdin?: string }) => {
     return <CodeExampleBlockLive code={props.code} language={props.language} stdin={props.stdin} />;
   },
 
@@ -131,8 +141,8 @@ export const components: Components<{
       return <></>;
     }
     return (
-      <span className='flex items-center justify-center'>
-        <Image src={props.url} alt={props.alt || ''} width={500} height={500} />
+      <span className='flex items-center justify-center my-8'>
+        <ImageLightbox src={props.url} alt={props.alt || ''} width={500} height={500} caption={props.caption} />
       </span>
     );
   },
