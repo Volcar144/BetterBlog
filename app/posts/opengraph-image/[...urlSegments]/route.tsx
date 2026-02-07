@@ -3,7 +3,7 @@ import client from '@/tina/__generated__/client';
 
 export const runtime = 'nodejs';
 
-export const size = {
+const size = {
   width: 1200,
   height: 630,
 };
@@ -12,9 +12,10 @@ export const contentType = 'image/png';
 
 export async function GET(
   _request: Request,
-  { params }: { params: { urlSegments: string[] } }
+  { params }: { params: Promise<{ urlSegments: string[] }> }
 ) {
-  const filepath = params.urlSegments.join('/');
+  const resolvedParams = await params;
+  const filepath = resolvedParams.urlSegments.join('/');
 
   const data = await client.queries.post({
     relativePath: `${filepath}.mdx`,
