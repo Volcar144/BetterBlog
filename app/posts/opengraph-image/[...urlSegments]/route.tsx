@@ -8,8 +8,6 @@ const size = {
   height: 630,
 };
 
-const contentType = 'image/png';
-
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ urlSegments: string[] }> }
@@ -39,6 +37,6 @@ export async function GET(
     >
       {post.title}
     </div>,
-    { ...size, contentType }
+    { ...size }
   );
 }
