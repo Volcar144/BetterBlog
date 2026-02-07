@@ -2,16 +2,36 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { Icon } from '../../icon';
 import { useLayout } from '../layout-context';
-import { Menu, X } from 'lucide-react';
+import { BookOpen, Menu, Moon, Sun, X } from 'lucide-react';
 import AlgoliaSearch from '@/components/algolia-search';
+import { Button } from '@/components/ui/button';
 
 export const Header = () => {
   const { globalSettings, theme } = useLayout();
   const header = globalSettings!.header!;
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const [readingMode, setReadingMode] = React.useState(false);
 
   const [menuState, setMenuState] = React.useState(false);
+
+  React.useEffect(() => {
+    const stored = localStorage.getItem('reading-mode');
+    if (stored !== null) {
+      setReadingMode(stored === 'true');
+    }
+  }, []);
+
+  React.useEffect(() => {
+    document.documentElement.classList.toggle('reading-mode', readingMode);
+    localStorage.setItem('reading-mode', readingMode ? 'true' : 'false');
+  }, [readingMode]);
+
+  const isDark = resolvedTheme === 'dark';
+
   return (
     <header>
       <nav data-state={menuState && 'active'} className='bg-background/50 fixed z-20 w-full border-b backdrop-blur-3xl'>
@@ -54,6 +74,28 @@ export const Header = () => {
               <div className='hidden lg:block'>
                 <AlgoliaSearch />
               </div>
+
+              <div className='hidden lg:flex items-center gap-2'>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  aria-pressed={readingMode}
+                  aria-label={readingMode ? 'Disable reading mode' : 'Enable reading mode'}
+                  onClick={() => setReadingMode((prev) => !prev)}
+                >
+                  <BookOpen className={readingMode ? 'text-foreground' : 'text-muted-foreground'} />
+                </Button>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                  onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                >
+                  {isDark ? <Sun className='text-muted-foreground' /> : <Moon className='text-muted-foreground' />}
+                </Button>
+              </div>
             </div>
 
             <div className='bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent'>
@@ -70,6 +112,28 @@ export const Header = () => {
               </div>
               <div className='lg:hidden w-full'>
                 <AlgoliaSearch />
+              </div>
+
+              <div className='lg:hidden flex items-center gap-2'>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  aria-pressed={readingMode}
+                  aria-label={readingMode ? 'Disable reading mode' : 'Enable reading mode'}
+                  onClick={() => setReadingMode((prev) => !prev)}
+                >
+                  <BookOpen className={readingMode ? 'text-foreground' : 'text-muted-foreground'} />
+                </Button>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                  onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                >
+                  {isDark ? <Sun className='text-muted-foreground' /> : <Moon className='text-muted-foreground' />}
+                </Button>
               </div>
             </div>
           </div>

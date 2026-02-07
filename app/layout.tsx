@@ -1,6 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { Inter as FontSans, Lato, Nunito } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 import { cn } from '@/lib/utils';
 import { VideoDialogProvider } from '@/components/ui/VideoDialogContext';
 import VideoDialog from '@/components/ui/VideoDialog';
@@ -37,11 +38,13 @@ export default function RootLayout({
   return (
     <html lang='en' className={cn(fontSans.variable, nunito.variable, lato.variable)}>
       <body className='min-h-screen bg-background font-sans antialiased'>
-        <VideoDialogProvider>
-          {children}
-          <VideoDialog />
-        </VideoDialogProvider>
-        <TailwindIndicator />
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          <VideoDialogProvider>
+            {children}
+            <VideoDialog />
+          </VideoDialogProvider>
+          <TailwindIndicator />
+        </ThemeProvider>
       </body>
     </html>
   );

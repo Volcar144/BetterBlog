@@ -323,7 +323,7 @@ const HitsList = memo(function HitsList({ hits, selectedIndex, attributes, onHov
 export interface SearchInputProps {
   placeholder?: string;
   className?: string;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
   onClose: () => void;
   onArrowDown?: () => void;
   onEnter?: () => void;
@@ -401,7 +401,6 @@ const SearchInput = memo(function SearchInput(props: SearchInputProps) {
             props.onEnter?.();
           }
         }}
-        // biome-ignore lint/a11y/noAutofocus: expected
         autoFocus
       />
       <div className='flex items-center gap-2 ml-auto'>
@@ -435,7 +434,7 @@ interface SearchBoxProps {
   query?: string;
   className?: string;
   placeholder?: string;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
   refine: (query: string) => void;
   onClose?: () => void;
   onArrowDown?: () => void;
@@ -480,7 +479,7 @@ const NoResults = memo(function NoResults({ query, onClear }: NoResultsProps) {
 });
 
 interface ResultsPanelProps {
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
   query: string;
   selectedIndex: number;
   refine: (query: string) => void;
@@ -495,7 +494,6 @@ const ResultsPanel = memo(function ResultsPanel({ query, selectedIndex, config, 
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoverEnabled, setHoverEnabled] = useState(false);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: expected
   useEffect(() => {
     if (!scrollOnSelectionChange) return;
     const container = containerRef.current;
@@ -551,7 +549,7 @@ interface SearchModalProps {
 
 export function SearchModal({ onClose, config }: SearchModalProps) {
   const { query, refine } = useSearchBox();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useInstantSearch();
   const { items, sendEvent } = useHits();

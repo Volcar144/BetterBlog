@@ -120,6 +120,25 @@
   }
 }
 
+.reading-mode .prose {
+  font-size: 1.125rem;
+  line-height: 1.9;
+  max-width: 70ch !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reading-mode .prose pre {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding: 1rem;
+  border-radius: var(--radius);
+}
+
+.reading-mode .prose code {
+  font-size: 0.95em;
+}
+
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
