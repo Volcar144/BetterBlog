@@ -11,8 +11,9 @@ interface PageParams {
   urlSegments: string[];
 }
 
-export default async function Page({ params }: { params: PageParams }) {
-  const filepath = params.urlSegments.join('/');
+export default async function Page({ params }: { params: Promise<PageParams> }) {
+  const resolvedParams = await params;
+  const filepath = resolvedParams.urlSegments.join('/');
 
   let data;
   try {
