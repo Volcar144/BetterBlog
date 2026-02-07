@@ -1,0 +1,60 @@
+
+# .github/workflows/vercel-deploy-debounced.yml
+
+name: Vercel Deploy (Debounced)
+
+on:
+  push:
+    branches:
+      - main # Configure this to your primary branch (e.g., 'main', 'master', 'production')
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # This 'concurrency' setting is key for debouncing:
+    # - 'group': Defines a group for concurrency. Only one job in this group can run at a time.
+    #            Using a fixed string like 'vercel-deploy-main' means all pushes to 'main'
+    #            will fall into this group.
+    # - 'cancel-in-progress: true': If a new job starts in this group while an old one is
+    #                               still running, the old job will be automatically cancelled.
+    concurrency:
+      group: vercel-deploy-main
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Debounce commits for 5 minutes
+        run: |
+          echo "New commit pushed. Waiting for 5 minutes to ensure no further commits..."
+          sleep 300 # Wait for 300 seconds (5 minutes)
+          echo "Debounce period completed. If this job was not cancelled, no new commits arrived."
+          # If a new commit had been pushed during this 'sleep' period,
+          # this job would have been cancelled by the 'concurrency' setting,
+          # and a new job for the latest commit would have started.
+          # Therefore, if this step completes, it means there was a 5-minute
+          # window without new commits on this branch.
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        # This step pulls your Vercel project's environment variables and configuration.
+        # This is often needed for the 'vercel build' step to succeed.
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project
+        # This performs the build locally within the GitHub Actions runner.
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          SITE_URL: ${{ secrets.VERCEL_URL }}
+
+      - name: Deploy Project to Vercel
+        # The '--prebuilt' flag tells Vercel to use the already built output from the previous step,
+        # which saves Vercel build minutes as it doesn't need to build again.
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
