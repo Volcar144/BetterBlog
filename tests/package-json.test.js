@@ -26,19 +26,11 @@ describe('package.json: scripts contract', () => {
   });
 
   test('dev uses tinacms dev with Next.js turbopack', () => {
-    assert.equal(
-      pkg.scripts.dev,
-      'tinacms dev -c "next dev --turbopack"',
-      'dev script must use tinacms dev -c "next dev --turbopack"'
-    );
+    assert.equal(pkg.scripts.dev, 'tinacms dev -c "next dev --turbopack"', 'dev script must use tinacms dev -c "next dev --turbopack"');
   });
 
   test('build runs tinacms build then next build', () => {
-    assert.equal(
-      pkg.scripts.build,
-      'tinacms build && next build',
-      'build script must run tinacms build && next build'
-    );
+    assert.equal(pkg.scripts.build, 'tinacms build && next build', 'build script must run tinacms build && next build');
   });
 
   test('build-local includes local flags and skips indexing/cloud checks before next build', () => {
@@ -52,19 +44,11 @@ describe('package.json: scripts contract', () => {
   });
 
   test('start runs tinacms build then next start', () => {
-    assert.equal(
-      pkg.scripts.start,
-      'tinacms build && next start',
-      'start script must run tinacms build && next start'
-    );
+    assert.equal(pkg.scripts.start, 'tinacms build && next start', 'start script must run tinacms build && next start');
   });
 
   test('export performs a full build before next export', () => {
-    assert.equal(
-      pkg.scripts.export,
-      'npm run build && next export',
-      'export script must run npm run build && next export'
-    );
+    assert.equal(pkg.scripts.export, 'npm run build && next export', 'export script must run npm run build && next export');
   });
 
   test('lint uses biome', () => {

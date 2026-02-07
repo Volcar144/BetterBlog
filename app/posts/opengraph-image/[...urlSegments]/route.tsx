@@ -8,10 +8,7 @@ const size = {
   height: 630,
 };
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ urlSegments: string[] }> }
-) {
+export async function GET(_request: Request, { params }: { params: Promise<{ urlSegments: string[] }> }) {
   const resolvedParams = await params;
   const filepath = resolvedParams.urlSegments.join('/');
 

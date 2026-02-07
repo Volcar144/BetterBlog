@@ -5,12 +5,11 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { Template } from 'tinacms';
 
-interface CodeExampleData {
-  title?: string;
-  language?: string;
-  code?: string;
-  stdin?: string;
-  [key: string]: unknown;
+interface CodeExampleData extends Record<string, unknown> {
+  title?: string | null;
+  language?: string | null;
+  code?: string | null;
+  stdin?: string | null;
 }
 
 export const CodeExampleBlockCMS = ({ data }: { data: CodeExampleData }) => {

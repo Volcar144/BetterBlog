@@ -57,11 +57,14 @@ export const Accordion = ({ data }: { data: AccordionBlockData }) => {
 };
 
 interface AccordionItemComponentProps {
-  item: {
-    title?: string | null;
-    content?: string | null;
-    [key: string]: unknown;
-  } | null | undefined;
+  item:
+    | {
+        title?: string | null;
+        content?: string | null;
+        [key: string]: unknown;
+      }
+    | null
+    | undefined;
   index: number;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
@@ -70,7 +73,7 @@ interface AccordionItemComponentProps {
 
 const AccordionItemComponent: React.FC<AccordionItemComponentProps> = ({ item, index, isOpen, onOpenChange, itemPath }) => {
   if (!item) return null;
-  
+
   const title = (item.title as string | null | undefined) || `Item ${index + 1}`;
   const content = item.content;
 

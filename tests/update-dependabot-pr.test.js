@@ -10,7 +10,7 @@ function loadWorkflowContentByName(workflowName) {
   const workflowsDir = path.join(process.cwd(), '.github', 'workflows');
   assert.ok(fs.existsSync(workflowsDir), `Workflows directory not found at ${workflowsDir}`);
 
-  const files = fs.readdirSync(workflowsDir).filter(f => /\.(ya?ml)$/i.test(f));
+  const files = fs.readdirSync(workflowsDir).filter((f) => /\.(ya?ml)$/i.test(f));
   assert.ok(files.length > 0, 'No workflow YAML files found under .github/workflows');
 
   for (const file of files) {
@@ -38,8 +38,12 @@ describe('GitHub Actions Workflow: "Update TinaCMS Dependencies"', () => {
   const WORKFLOW_NAME = 'Update TinaCMS Dependencies';
   let workflow;
 
-  beforeAll?.(() => { workflow = loadWorkflowContentByName(WORKFLOW_NAME); });
-  before?.(() => { workflow = loadWorkflowContentByName(WORKFLOW_NAME); });
+  beforeAll?.(() => {
+    workflow = loadWorkflowContentByName(WORKFLOW_NAME);
+  });
+  before?.(() => {
+    workflow = loadWorkflowContentByName(WORKFLOW_NAME);
+  });
 
   it('should exist under .github/workflows and be named correctly', () => {
     assert.ok(workflow && workflow.filePath && workflow.content, 'Workflow content was not loaded');
@@ -50,9 +54,9 @@ describe('GitHub Actions Workflow: "Update TinaCMS Dependencies"', () => {
     // Allow flexible whitespace/indentation
     const re = new RegExp(
       [
-        '^\\s*on:\\s*$',                  // on:
-        '[\\s\\S]*?^\\s*push:\\s*$',      //   push:
-        '[\\s\\S]*?^\\s*branches:\\s*$',  //     branches:
+        '^\\s*on:\\s*$', // on:
+        '[\\s\\S]*?^\\s*push:\\s*$', //   push:
+        '[\\s\\S]*?^\\s*branches:\\s*$', //     branches:
         '[\\s\\S]*?^\\s*-\\s*dependabot\\/npm_and_yarn\\/\\*\\*\\s*$', //       - dependabot/npm_and_yarn/**
       ].join(''),
       'm'
@@ -123,19 +127,10 @@ describe('GitHub Actions Workflow: "Update TinaCMS Dependencies"', () => {
   it('should run yarn commands without additional unexpected flags (sanity checks)', () => {
     // Validate the core yarn commands appear as intended
     const lines = workflow.content.split(/\r?\n/);
-    const yarnRuns = lines.filter(l => l.trim().startsWith('run: yarn ')).map(l => l.trim());
-    assert.ok(
-      yarnRuns.includes('run: yarn install'),
-      'Missing "yarn install"'
-    );
-    assert.ok(
-      yarnRuns.includes('run: yarn upgrade tinacms@latest @tinacms/cli@latest'),
-      'Missing "yarn upgrade tinacms@latest @tinacms/cli@latest"'
-    );
-    assert.ok(
-      yarnRuns.includes('run: yarn tinacms audit'),
-      'Missing "yarn tinacms audit"'
-    );
+    const yarnRuns = lines.filter((l) => l.trim().startsWith('run: yarn ')).map((l) => l.trim());
+    assert.ok(yarnRuns.includes('run: yarn install'), 'Missing "yarn install"');
+    assert.ok(yarnRuns.includes('run: yarn upgrade tinacms@latest @tinacms/cli@latest'), 'Missing "yarn upgrade tinacms@latest @tinacms/cli@latest"');
+    assert.ok(yarnRuns.includes('run: yarn tinacms audit'), 'Missing "yarn tinacms audit"');
     // Ensure no obvious extra destructive flags slipped in
     assert.ok(
       \!yarnRuns.some(l => /--force|--non-interactive|--immutable|--frozen-lockfile/.test(l)),

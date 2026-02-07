@@ -13,7 +13,7 @@
   "formatter": {
     "enabled": true,
     "useEditorconfig": true,
-    "formatWithErrors": false,
+    "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf",
