@@ -9,6 +9,7 @@ import { Callout } from './callout';
 import { Stats } from './stats';
 import { CallToAction } from './call-to-action';
 import { CodeExampleBlockCMS } from './code-example-cms';
+import { Accordion } from './accordion';
 
 export const Blocks = (props: Omit<Page, 'id' | '_sys' | '_values'>) => {
   if (!props.blocks) return null;
@@ -45,6 +46,8 @@ const Block = (block: PageBlocks) => {
       return <CallToAction data={block} />;
     case 'PageBlocksCodeExample':
       return <CodeExampleBlockCMS data={block} />;
+    case 'PageBlocksAccordion':
+      return <Accordion data={block} />;
     default:
       return null;
   }
