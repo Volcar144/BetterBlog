@@ -251,7 +251,7 @@ vercel logs --follow
 1. Verify `REDIS_URL` is correctly set in Vercel environment variables
 2. Ensure URL format is correct: `redis://[username:password@]host[:port][/database]`
 3. URL must start with `redis://` or `rediss://` (for TLS)
-4. Special characters in passwords must be URL-encoded
+4. Special characters in passwords must be URL-encoded (e.g., use `encodeURIComponent('my@pass#word')` in JavaScript, or use online tools like urlencoder.org)
 5. Test connection locally: `redis-cli -u $REDIS_URL`
 6. If self-hosted, ensure Redis server is running
 7. If using Redis Cloud/Upstash, check firewall rules

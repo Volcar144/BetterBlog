@@ -154,7 +154,7 @@ redis://[username:password@]host[:port][/database]
 
 Common issues:
 - Missing `redis://` prefix
-- Special characters in password not URL-encoded (use `encodeURIComponent()` for passwords with special characters)
+- Special characters in password not URL-encoded (use `encodeURIComponent('your-password')` in JavaScript, or online tools like urlencoder.org)
 - Invalid host or port format
 - Extra spaces or newlines in the environment variable
 

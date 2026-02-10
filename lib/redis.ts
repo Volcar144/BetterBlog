@@ -36,7 +36,15 @@ export async function getRedisClient(): Promise<RedisClientType> {
 
     return redisClient;
   } catch (error) {
-    redisClient = null;
+    // Clean up partially initialized client
+    if (redisClient) {
+      try {
+        await redisClient.disconnect();
+      } catch {
+        // Ignore disconnect errors
+      }
+      redisClient = null;
+    }
     if (error instanceof Error) {
       throw new Error(`Failed to connect to Redis: ${error.message}. Common causes: network connectivity issues, server unavailability, or incorrect credentials.`);
     }
