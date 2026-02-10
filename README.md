@@ -11,7 +11,6 @@ The content is managed through Markdown and JSON files stored in your GitHub rep
 - [Tina Headless CMS](https://app.tina.io) for authentication, content modeling, visual editing and team management.
 - [Vercel](https://vercel.com) deployment to visually edit your site from the `/admin` route.
 - Local development workflow from the filesystem with a local GraqhQL server.
-
 ## Requirements
 
 - Git, [Node.js Active LTS](https://nodejs.org/en/about/releases/), pnpm installed for local development.
