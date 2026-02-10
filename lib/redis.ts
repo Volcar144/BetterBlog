@@ -8,17 +8,38 @@ export async function getRedisClient(): Promise<RedisClientType> {
     throw new Error('REDIS_URL environment variable is not set');
   }
 
+  // Validate Redis URL format
+  try {
+    const url = new URL(redisUrl);
+    if (!url.protocol.startsWith('redis')) {
+      throw new Error(`Invalid Redis URL protocol: ${url.protocol}. Expected 'redis://' or 'rediss://'`);
+    }
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(`Cannot parse REDIS_URL: Invalid URL format. Expected format: redis://[username:password@]host[:port][/database]`);
+    }
+    throw error;
+  }
+
   if (redisClient) {
     return redisClient;
   }
 
-  redisClient = createClient({ url: redisUrl });
+  try {
+    redisClient = createClient({ url: redisUrl });
 
-  redisClient.on('error', (err) => {
-    console.error('Redis client error:', err);
-  });
+    redisClient.on('error', (err) => {
+      console.error('Redis client error:', err);
+    });
 
-  await redisClient.connect();
+    await redisClient.connect();
 
-  return redisClient;
+    return redisClient;
+  } catch (error) {
+    redisClient = null;
+    if (error instanceof Error) {
+      throw new Error(`Failed to connect to Redis: ${error.message}. Please check your REDIS_URL format and network connectivity.`);
+    }
+    throw error;
+  }
 }
