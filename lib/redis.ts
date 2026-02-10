@@ -40,8 +40,9 @@ export async function getRedisClient(): Promise<RedisClientType> {
     if (redisClient) {
       try {
         await redisClient.disconnect();
-      } catch {
-        // Ignore disconnect errors
+      } catch (disconnectError) {
+        // Log but don't throw - cleanup errors shouldn't mask the original error
+        console.debug('Error during Redis client cleanup:', disconnectError);
       }
       redisClient = null;
     }
