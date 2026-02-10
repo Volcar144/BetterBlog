@@ -38,7 +38,7 @@ export async function getRedisClient(): Promise<RedisClientType> {
   } catch (error) {
     redisClient = null;
     if (error instanceof Error) {
-      throw new Error(`Failed to connect to Redis: ${error.message}. Please check your REDIS_URL format and network connectivity.`);
+      throw new Error(`Failed to connect to Redis: ${error.message}. Please check your network connectivity, Redis server availability, and authentication credentials.`);
     }
     throw error;
   }
