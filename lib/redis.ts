@@ -16,7 +16,7 @@ export async function getRedisClient(): Promise<RedisClientType> {
     }
   } catch (error) {
     if (error instanceof TypeError) {
-      throw new Error('Invalid REDIS_URL format. Expected format: redis://[username:password@]host[:port][/database]');
+      throw new Error('Invalid REDIS_URL format: The URL is malformed or missing required components. Expected format: redis://[username:password@]host[:port][/database]');
     }
     throw error;
   }
