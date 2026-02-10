@@ -16,7 +16,7 @@ export async function getRedisClient(): Promise<RedisClientType> {
     }
   } catch (error) {
     if (error instanceof TypeError) {
-      throw new Error(`Cannot parse REDIS_URL: Invalid URL format. Expected format: redis://[username:password@]host[:port][/database]`);
+      throw new Error('Cannot parse REDIS_URL: Invalid URL format. Expected format: redis://[username:password@]host[:port][/database]');
     }
     throw error;
   }
@@ -38,7 +38,7 @@ export async function getRedisClient(): Promise<RedisClientType> {
   } catch (error) {
     redisClient = null;
     if (error instanceof Error) {
-      throw new Error(`Failed to connect to Redis: ${error.message}. Please check your network connectivity, Redis server availability, and authentication credentials.`);
+      throw new Error(`Failed to connect to Redis: ${error.message}. Common causes: network connectivity issues, server unavailability, or incorrect credentials.`);
     }
     throw error;
   }
