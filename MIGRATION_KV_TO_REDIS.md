@@ -143,6 +143,21 @@ error: getaddrinfo ENOTFOUND
 ```
 Check that `REDIS_URL` is correct and Redis is accessible from your deployment environment.
 
+### Cannot Parse REDIS_URL
+```
+Cannot parse REDIS_URL: Invalid URL format
+```
+The REDIS_URL must start with `redis://` or `rediss://` (for TLS) and follow the format:
+```
+redis://[username:password@]host[:port][/database]
+```
+
+Common issues:
+- Missing `redis://` prefix
+- Special characters in password not URL-encoded (use `encodeURIComponent()` for passwords with special characters)
+- Invalid host or port format
+- Extra spaces or newlines in the environment variable
+
 ### Authentication Failed
 Verify the password in `REDIS_URL` is correct. Format: `redis://default:PASSWORD@host:port`
 
