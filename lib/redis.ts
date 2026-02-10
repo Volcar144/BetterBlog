@@ -12,7 +12,7 @@ export async function getRedisClient(): Promise<RedisClientType> {
   try {
     const url = new URL(redisUrl);
     if (url.protocol !== 'redis:' && url.protocol !== 'rediss:') {
-      throw new Error(`Invalid Redis URL protocol: ${url.protocol}. Expected 'redis://' or 'rediss://'`);
+      throw new Error("Invalid Redis URL protocol. Expected 'redis://' or 'rediss://'");
     }
   } catch (error) {
     if (error instanceof TypeError) {
