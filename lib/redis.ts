@@ -8,17 +8,47 @@ export async function getRedisClient(): Promise<RedisClientType> {
     throw new Error('REDIS_URL environment variable is not set');
   }
 
+  // Validate Redis URL format
+  try {
+    const url = new URL(redisUrl);
+    if (url.protocol !== 'redis:' && url.protocol !== 'rediss:') {
+      throw new Error("Invalid Redis URL protocol. Expected 'redis://' or 'rediss://'");
+    }
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error('Invalid REDIS_URL format: The URL is malformed or missing required components. Expected format: redis://[username:password@]host[:port][/database]');
+    }
+    throw error;
+  }
+
   if (redisClient) {
     return redisClient;
   }
 
-  redisClient = createClient({ url: redisUrl });
+  try {
+    redisClient = createClient({ url: redisUrl });
 
-  redisClient.on('error', (err) => {
-    console.error('Redis client error:', err);
-  });
+    redisClient.on('error', (err) => {
+      console.error('Redis client error:', err);
+    });
 
-  await redisClient.connect();
+    await redisClient.connect();
 
-  return redisClient;
+    return redisClient;
+  } catch (error) {
+    // Clean up partially initialized client
+    if (redisClient) {
+      try {
+        await redisClient.disconnect();
+      } catch (disconnectError) {
+        // Log but don't throw - cleanup errors shouldn't mask the original error
+        console.debug('Error during Redis client cleanup:', disconnectError);
+      }
+      redisClient = null;
+    }
+    if (error instanceof Error) {
+      throw new Error(`Failed to connect to Redis: ${error.message}`);
+    }
+    throw error;
+  }
 }
